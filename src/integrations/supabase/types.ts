@@ -14,7 +14,280 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      certifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          platform: string
+          skill_tags: string[]
+          title: string
+          url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          platform: string
+          skill_tags: string[]
+          title: string
+          url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          platform?: string
+          skill_tags?: string[]
+          title?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
+      graduate_profiles: {
+        Row: {
+          created_at: string | null
+          extracted_skills: string[] | null
+          id: string
+          job_matches: Json | null
+          resume_text: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          extracted_skills?: string[] | null
+          id?: string
+          job_matches?: Json | null
+          resume_text?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          extracted_skills?: string[] | null
+          id?: string
+          job_matches?: Json | null
+          resume_text?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "graduate_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      internships: {
+        Row: {
+          created_at: string | null
+          id: string
+          job_role: string
+          platform: string
+          required_skills: string[]
+          title: string
+          url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          job_role: string
+          platform: string
+          required_skills: string[]
+          title: string
+          url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          job_role?: string
+          platform?: string
+          required_skills?: string[]
+          title?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
+      jobs: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          required_skills: string[]
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          required_skills: string[]
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          required_skills?: string[]
+          title?: string
+        }
+        Relationships: []
+      }
+      mentor_feedback: {
+        Row: {
+          created_at: string | null
+          feedback: string
+          graduate_id: string | null
+          id: string
+          mentor_id: string | null
+          score: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          feedback: string
+          graduate_id?: string | null
+          id?: string
+          mentor_id?: string | null
+          score?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          feedback?: string
+          graduate_id?: string | null
+          id?: string
+          mentor_id?: string | null
+          score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_feedback_graduate_id_fkey"
+            columns: ["graduate_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mentor_feedback_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_questions: {
+        Row: {
+          correct_answer: string
+          created_at: string | null
+          id: string
+          options: Json
+          question: string
+          subject: string
+        }
+        Insert: {
+          correct_answer: string
+          created_at?: string | null
+          id?: string
+          options: Json
+          question: string
+          subject: string
+        }
+        Update: {
+          correct_answer?: string
+          created_at?: string | null
+          id?: string
+          options?: Json
+          question?: string
+          subject?: string
+        }
+        Relationships: []
+      }
+      quiz_results: {
+        Row: {
+          answers: Json
+          created_at: string | null
+          id: string
+          score: number
+          subject: string
+          total_questions: number
+          user_id: string | null
+        }
+        Insert: {
+          answers: Json
+          created_at?: string | null
+          id?: string
+          score: number
+          subject: string
+          total_questions: number
+          user_id?: string | null
+        }
+        Update: {
+          answers?: Json
+          created_at?: string | null
+          id?: string
+          score?: number
+          subject?: string
+          total_questions?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_results_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      skills: {
+        Row: {
+          created_at: string | null
+          domain: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          domain: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          domain?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      users: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          name: string
+          password: string
+          role: Database["public"]["Enums"]["user_role"]
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          name: string
+          password: string
+          role: Database["public"]["Enums"]["user_role"]
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          name?: string
+          password?: string
+          role?: Database["public"]["Enums"]["user_role"]
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +296,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_role: "student" | "graduate" | "mentor" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +423,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["student", "graduate", "mentor", "admin"],
+    },
   },
 } as const
