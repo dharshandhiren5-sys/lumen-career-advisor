@@ -13,7 +13,7 @@ import { FileText, Briefcase, Award, ExternalLink, TrendingUp } from 'lucide-rea
 
 const GraduateDashboard = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
+  const user = getCurrentUser();
   const [resumeText, setResumeText] = useState('');
   const [extractedSkills, setExtractedSkills] = useState<string[]>([]);
   const [jobMatches, setJobMatches] = useState<any[]>([]);
@@ -22,20 +22,14 @@ const GraduateDashboard = () => {
   const [analyzing, setAnalyzing] = useState(false);
 
   useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
-    const currentUser = await getCurrentUser();
-    if (!currentUser || currentUser.role !== 'graduate') {
+    if (!user || user.role !== 'graduate') {
       navigate('/login');
       return;
     }
-    setUser(currentUser);
     loadProfile();
     loadCertifications();
     loadInternships();
-  };
+  }, [user, navigate]);
 
   const loadProfile = async () => {
     if (!user) return;

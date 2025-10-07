@@ -14,25 +14,19 @@ import { Users, MessageSquare, Star } from 'lucide-react';
 
 const MentorDashboard = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
+  const user = getCurrentUser();
   const [graduates, setGraduates] = useState<any[]>([]);
   const [selectedGraduate, setSelectedGraduate] = useState<any>(null);
   const [feedback, setFeedback] = useState('');
   const [score, setScore] = useState(75);
 
   useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
-    const currentUser = await getCurrentUser();
-    if (!currentUser || currentUser.role !== 'mentor') {
+    if (!user || user.role !== 'mentor') {
       navigate('/login');
       return;
     }
-    setUser(currentUser);
     loadGraduates();
-  };
+  }, [user, navigate]);
 
   const loadGraduates = async () => {
     const { data: users } = await supabase
@@ -63,13 +57,11 @@ const MentorDashboard = () => {
       return;
     }
 
-    if (!user) return;
-    
     const { error } = await supabase
       .from('mentor_feedback')
       .insert({
         graduate_id: selectedGraduate.id,
-        mentor_id: user.id,
+        mentor_id: user!.id,
         feedback: feedback,
         score: score
       });
