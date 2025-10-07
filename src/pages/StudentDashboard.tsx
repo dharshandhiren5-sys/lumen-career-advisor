@@ -13,7 +13,7 @@ import { QuizQuestion } from '@/types/database';
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
-  const user = getCurrentUser();
+  const [user, setUser] = useState<any>(null);
   const [subjects, setSubjects] = useState<string[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
@@ -23,12 +23,18 @@ const StudentDashboard = () => {
   const [score, setScore] = useState(0);
 
   useEffect(() => {
-    if (!user || user.role !== 'student') {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    const currentUser = await getCurrentUser();
+    if (!currentUser || currentUser.role !== 'student') {
       navigate('/login');
       return;
     }
+    setUser(currentUser);
     loadSubjects();
-  }, [user, navigate]);
+  };
 
   const loadSubjects = async () => {
     const { data } = await supabase

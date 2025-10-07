@@ -175,6 +175,30 @@ export type Database = {
           },
         ]
       }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          id: string
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          id: string
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       quiz_questions: {
         Row: {
           correct_answer: string
@@ -261,13 +285,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           created_at: string | null
           email: string
           id: string
           name: string
-          password: string
           role: Database["public"]["Enums"]["user_role"]
         }
         Insert: {
@@ -275,7 +319,6 @@ export type Database = {
           email: string
           id?: string
           name: string
-          password: string
           role: Database["public"]["Enums"]["user_role"]
         }
         Update: {
@@ -283,7 +326,6 @@ export type Database = {
           email?: string
           id?: string
           name?: string
-          password?: string
           role?: Database["public"]["Enums"]["user_role"]
         }
         Relationships: []
@@ -293,9 +335,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_role: {
+        Args: { _user_id: string }
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
+      app_role: "student" | "graduate" | "mentor" | "admin"
       user_role: "student" | "graduate" | "mentor" | "admin"
     }
     CompositeTypes: {
@@ -424,6 +477,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["student", "graduate", "mentor", "admin"],
       user_role: ["student", "graduate", "mentor", "admin"],
     },
   },

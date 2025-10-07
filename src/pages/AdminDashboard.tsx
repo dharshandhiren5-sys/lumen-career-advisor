@@ -19,7 +19,7 @@ import {
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const user = getCurrentUser();
+  const [user, setUser] = useState<any>(null);
   const [stats, setStats] = useState({
     totalUsers: 0,
     students: 0,
@@ -35,12 +35,18 @@ const AdminDashboard = () => {
   const [jobs, setJobs] = useState<any[]>([]);
 
   useEffect(() => {
-    if (!user || user.role !== 'admin') {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    const currentUser = await getCurrentUser();
+    if (!currentUser || currentUser.role !== 'admin') {
       navigate('/login');
       return;
     }
+    setUser(currentUser);
     loadData();
-  }, [user, navigate]);
+  };
 
   const loadData = async () => {
     // Load users
